@@ -54,6 +54,10 @@
 %   \zhuanmh{专名}
 %   \shumh{书名}
 
+% 引用、交互
+\setupreferencing[left=,right=] % 覆盖左右两侧的引号
+\setupinteraction   [state=start, color=blue,contrastcolor=black,style=]
+\define[1]\see{\at{}{页}[#1]\about[#1]}% 另见
 
 % 页眉
 % \setupheadertexts[{\getmarking[subsubject]}][][][{\getmarking[subsubject]}]
