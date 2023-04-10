@@ -1,0 +1,14 @@
+%%%%% 显式视觉调试信息 %%%%
+% \showboxes
+% \showglyphs
+\showframe
+% \showmakeup
+% \tracingnodes1 %1,2
+
+%%%%配置和宏环境
+\environment[env_setting.tex]
+
+\startproduct dict
+    \component[chapter_a.tex]
+    \component[chapter_b.tex]
+\stopproduct
