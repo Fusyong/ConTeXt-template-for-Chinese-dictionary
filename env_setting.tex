@@ -35,9 +35,9 @@
 % 行距设置
 \setupinterlinespace[line=1.5em]
 % 缩进设置
-% \setupindenting[yes, 2em, first]
-% 窄行设置
-\setupnarrower[left=1em]%
+\setupindenting[yes, 2em, first]
+% 窄行、缩进设置（每一级的缩进量）
+\setupnarrower[left=01em]%
 \setupcolumns[n=2, separator=rule]
 
 %%%% 标点压缩
@@ -90,29 +90,30 @@
     \startnarrower[left]%
         \newcount\hanginglinenum \hanginglinenum=2% 字头绕排行数
         \newdimen\titleindent \titleindent=-1em% 字头缩进量
-        \newdimen\hangingdist \hangingdist=0.2em% 绕排间距
+        \newdimen\hangingdist \hangingdist=-0.5em% 绕排间距
 
         \setbox0=\hbox{\tfd \bf #1}% 字头
         \newdimen\titleright \titleright=\wd0% 字头宽度
         \advance\titleright by \titleindent%
-        \advance\titleright by \hangingdist%
+        \advance\titleright by -\hangingdist%
         
         \setupindenting[yes,\titleindent]% 缩进
         % 字头绕排
         \starthanging[location=left,n=\hanginglinenum,distance=\hangingdist]{%
-                \reference[#1-#2]{#2}% 引用锚点
-                \setdataset[zicitable][title=#1, pinyin=#2, class=zi]% 登记在字词表中，不用键名
-                \box0% 字头
-            }%
-            #2 #3 \par% 字头解释
-            \advance \hanginglinenum by -\prevgraf%
-            \ifnum \hanginglinenum=1% 有一个空行
+            \reference[#1-#2]{#2}% 引用锚点
+            \setdataset[zicitable][title=#1, pinyin=#2, class=zi]% 登记在字词表中，不用键名
+            \box0% 字头
+        }%
+            {\hskip -\titleindent #2 #3}\par% 字头解释，字头缩进后需要用hskip和hangingdist修正
+            \advance \hanginglinenum by -\prevgraf% 减去上一个段落的行数
+            % 如果实际绕排1行，还有1个空行，则后行跟上、加缩进
+            \ifnum \hanginglinenum=1%
                 \doifsomethingelse{#4}
-                {\setupindenting[yes,\titleright]另见#4}%
-                {\dorecurse{\hanginglinenum}{\blank}}%
+                    {\setupindenting[yes,\titleright]另见#4}%
+                    {\dorecurse{\hanginglinenum}{\blank}}%
             \else%
                 \doifsomethingelse{#4}
-                {\setupindenting[yes,2em]另见#4}%
+                    {\setupindenting[yes,2em]另见#4}%
             \fi%
         \stophanging%
     \stopnarrower%
