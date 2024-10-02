@@ -22,9 +22,23 @@
 % \definefont[kaiti][name:kaiti*default at 24pt]
 
 % 配置章节格式
-\setuphead[chapter][style={\setupalign[middle]\bf\switchtobodyfont[80pt]}]
+\setuphead[chapter][style={\setupalign[middle]\bf\switchtobodyfont[30pt]}]
 \setuphead[section][style={\setupalign[middle]\bf\switchtobodyfont[20pt]}]
 \setuphead[subsection][style={\setupalign[middle]\bf\switchtobodyfont[12pt]}]
+
+% 目录设置
+\setupcolors[state=start]
+\setupheadtext[content=音节表]
+\setuphead[chapter][number=no]
+\setuphead[section][number=no]
+\setuphead[subsection][number=no]
+\setuphead[subsubsection][number=no]
+\setupcombinedlist[content][list={chapter,section,subsection,subsubsection}]%alternative=c
+\setuplist[section][width=10mm, style=bold]
+\setuplist[subsection][width=20mm]
+\setuplist[subsubsection][width=20mm, style=slanted, pagestyle=normal]
+% pdf交互/链接
+\setupinteraction[state=start]
 
 % 设置页码格式
 \setuppagenumbering[
@@ -88,29 +102,29 @@
 % \defineexpandable
 \define[4]\zi{%
     \startnarrower[left]%
-        \newcount\hanginglinenum \hanginglinenum=2% 字头绕排行数
-        \newdimen\titleindent \titleindent=-1em% 字头缩进量
+        \newcount\myhanglinenum \myhanglinenum=2% 字头绕排行数
+        \newdimen\mytitleindent \mytitleindent=-1em% 字头缩进量
         \newdimen\hangingdist \hangingdist=-0.5em% 绕排间距
 
         \setbox0=\hbox{\tfd \bf #1}% 字头
         \newdimen\titleright \titleright=\wd0% 字头宽度
-        \advance\titleright by \titleindent%
+        \advance\titleright by \mytitleindent%
         \advance\titleright by -\hangingdist%
         
-        \setupindenting[yes,\titleindent]% 缩进
+        \setupindenting[yes,\mytitleindent]% 缩进
         % 字头绕排
-        \starthanging[location=left,n=\hanginglinenum,distance=\hangingdist]{%
+        \starthanging[location=left,n=\myhanglinenum,distance=\hangingdist]{%
             \reference[#1-#2]{#2}% 引用锚点
             \setdataset[zicitable][title=#1, pinyin=#2, class=zi]% 登记在字词表中，不用键名
             \box0% 字头
         }%
-            {\hskip -\titleindent #2 #3}\par% 字头解释，字头缩进后需要用hskip和hangingdist修正
-            \advance \hanginglinenum by -\prevgraf% 减去上一个段落的行数
+            {\hskip -\mytitleindent #2 #3}\par% 字头解释，字头缩进后需要用hskip和hangingdist修正
+            \advance \myhanglinenum by -\prevgraf% 减去上一个段落的行数
             % 如果实际绕排1行，还有1个空行，则后行跟上、加缩进
-            \ifnum \hanginglinenum=1%
+            \ifnum \myhanglinenum=1%
                 \doifsomethingelse{#4}
                     {\setupindenting[yes,\titleright]另见#4}%
-                    {\dorecurse{\hanginglinenum}{\blank}}%
+                    {\dorecurse{\myhanglinenum}{\blank}}%
             \else%
                 \doifsomethingelse{#4}
                     {\setupindenting[yes,2em]另见#4}%

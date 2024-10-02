@@ -11,4 +11,6 @@
 \startproduct dict
     \component[chapter_a.tex]
     \component[chapter_b.tex]
+    \component[chapter_syllable_index.tex]
+    \component[chapter_stroke_index.tex]
 \stopproduct
